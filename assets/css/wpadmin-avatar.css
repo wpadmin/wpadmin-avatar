@@ -1,0 +1,30 @@
+/**
+ * Стили для отображения аватара и элементов управления
+ *
+ * @package WPAdminAvatar
+ * @author  wpadmin
+ */
+
+/* Контейнер аватара */
+#my-avatar-display {
+    max-width: 150px;
+}
+
+/* Контейнер изображения */
+#my-avatar-display-image {
+    margin-bottom: 10px;
+}
+
+/* Стили для изображения аватара */
+#my-avatar-display-image img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%; /* Круглый аватар */
+}
+
+/* Кнопка обновления аватара */
+#my-avatar-link {
+    width: 100%;
+    text-align: center;
+}

@@ -1,0 +1,25 @@
+{
+    "name": "wpadmin/wpadmin-avatar",
+    "description": "Удобный плагин для управления аватарами пользователей WordPress",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "wpadmin",
+            "homepage": "https://github.com/wpadmin"
+        }
+    ],
+    "require": {
+        "php": ">=7.2",
+        "composer/installers": "~1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0",
+        "wp-coding-standards/wpcs": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "WPAdmin\\Avatar\\": "src/"
+        }
+    }
+}
