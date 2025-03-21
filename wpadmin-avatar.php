@@ -47,6 +47,9 @@ class Custom_User_Avatars
 
         // Добавляем Ajax-обработчик для загрузки аватара
         add_action('wp_ajax_upload_user_avatar', array($this, 'ajax_upload_user_avatar'));
+
+        // Добавляем обработчик для получения стандартного аватара
+        add_action('wp_ajax_get_default_avatar', array($this, 'ajax_get_default_avatar'));
     }
 
     /**
@@ -80,6 +83,38 @@ class Custom_User_Avatars
 
             wp_enqueue_script('custom-avatar-upload');
         }
+    }
+
+    /**
+     * Ajax-обработчик для получения стандартного аватара
+     */
+    public function ajax_get_default_avatar()
+    {
+        // Проверяем nonce для безопасности
+        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'custom_avatar_upload_nonce')) {
+            wp_send_json_error(array('message' => __('Ошибка безопасности. Попробуйте обновить страницу.', 'custom-avatars')));
+        }
+
+        // Проверяем права доступа
+        if (!is_user_logged_in()) {
+            wp_send_json_error(array('message' => __('Вы должны быть авторизованы.', 'custom-avatars')));
+        }
+
+        // Получаем ID пользователя и размер аватара
+        $user_id = isset($_POST['user_id']) ? absint($_POST['user_id']) : get_current_user_id();
+        $size = isset($_POST['size']) ? absint($_POST['size']) : 96;
+
+        // Временно удаляем наш фильтр, чтобы получить стандартный аватар WordPress
+        remove_filter('get_avatar', array($this, 'get_custom_avatar'), 10);
+
+        // Получаем HTML стандартного аватара
+        $avatar = get_avatar($user_id, $size);
+
+        // Восстанавливаем наш фильтр
+        add_filter('get_avatar', array($this, 'get_custom_avatar'), 10, 6);
+
+        // Отправляем HTML в ответе
+        wp_send_json_success(array('avatar' => $avatar));
     }
 
     /**
